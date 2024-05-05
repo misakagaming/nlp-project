@@ -1,0 +1,9 @@
+name: base
+channels:
+  - pytorch
+  - huggingface
+  - nvidia
+  - anaconda
+  - conda-forge
+  - defaults
+    

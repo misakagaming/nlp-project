@@ -1,0 +1,8 @@
+torch
+torchvision
+transformers[sentencepiece]
+datasets
+sacrebleu
+rouge_score
+py7zr
+transformers[torch]
