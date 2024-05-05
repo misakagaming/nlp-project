@@ -101,11 +101,11 @@ seq2seq_data_collator = DataCollatorForSeq2Seq(tokenizer, model=abs_model)
 
 
 trainer_args = TrainingArguments(
-    output_dir='pegasus-cnn_dailymail', num_train_epochs=1, warmup_steps=100,
+    output_dir='pegasus-cnn_dailymail', num_train_epochs=1, warmup_steps=500,
     per_device_train_batch_size=8, per_device_eval_batch_size=8,
     weight_decay=0.01, logging_steps=10,
-    evaluation_strategy='steps', eval_steps=100, save_steps=1e6,
-    gradient_accumulation_steps=64
+    evaluation_strategy='steps', eval_steps=500, save_steps=1e6,
+    gradient_accumulation_steps=16
 )
 
 trainer = Trainer(model=abs_model, args=trainer_args,
