@@ -67,9 +67,9 @@ def calculate_metric_on_test_ds(dataset, metric, model, tokenizer,
     score = metric.compute()
     return score
 
-cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:30%]")
-cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:30%]")
-cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:30%]")
+cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:50%]")
+cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:50%]")
+cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:50%]")
 cnn_dailymail = datasets.DatasetDict({"train":cnn_dailymail_train, "validation": cnn_dailymail_validation, "test":cnn_dailymail_test})
 
 split_lengths = [len(cnn_dailymail[split])for split in cnn_dailymail]
