@@ -3,6 +3,7 @@ from transformers import pipeline, set_seed
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import dataset
 from datasets import load_dataset, load_metric
 import nltk
 from nltk.tokenize import sent_tokenize
