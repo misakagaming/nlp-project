@@ -67,9 +67,9 @@ def calculate_metric_on_test_ds(dataset, metric, model, tokenizer,
     score = metric.compute()
     return score
 
-cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:1%]")
-cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:1%]")
-cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:1%]")
+cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:10%]")
+cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:10%]")
+cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:10%]")
 cnn_dailymail = datasets.DatasetDict({"train":cnn_dailymail_train, "validation": cnn_dailymail_validation, "test":cnn_dailymail_test})
 
 split_lengths = [len(cnn_dailymail[split])for split in cnn_dailymail]
@@ -127,7 +127,11 @@ rouge_names = ["rouge1", "rouge2", "rougeL", "rougeLsum"]
 
 rouge_dict = dict((rn, score[rn].mid.fmeasure ) for rn in rouge_names )
 
-pd.DataFrame(rouge_dict, index = [f'pegasus'] )
+
+
+df = pd.DataFrame(rouge_dict, index = [f'pegasus'] )
+
+print(df.to_string())
 
 abs_model.save_pretrained("pegasus-cnn_dailymail-model")
 
