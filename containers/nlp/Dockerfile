@@ -40,6 +40,7 @@ RUN /opt/python3/venv/base/bin/python3 -m pip install --no-cache-dir -r /opt/pyt
 #    conda clean -tipy
 
 COPY abstractive .
+COPY extractive .
 
 
 COPY entrypoint.sh /entrypoint.sh

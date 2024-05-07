@@ -7,3 +7,4 @@ rouge_score
 py7zr
 transformers[torch]
 matplotlib
+bert-extractive-summarizer
