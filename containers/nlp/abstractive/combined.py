@@ -91,7 +91,7 @@ articles = []
 highlights = []
 ids = []
 for i in range(len(cnn_dailymail_train)):  
-    print("extracting " + str(i))
+    print("extracting train " + str(i))
     articles.append(ext_model(cnn_dailymail_train[i]["article"], num_sentences = 10))
     highlights.append(cnn_dailymail_train[i]["highlights"])
     ids.append(cnn_dailymail_train[i]["id"])
@@ -101,6 +101,7 @@ articles = []
 highlights = []
 ids = []
 for i in range(len(cnn_dailymail_test)):  
+    print("extracting test " + str(i))
     articles.append(ext_model(cnn_dailymail_test[i]["article"], num_sentences = 10))
     highlights.append(cnn_dailymail_test[i]["highlights"])
     ids.append(cnn_dailymail_test[i]["id"])
@@ -110,6 +111,7 @@ articles = []
 highlights = []
 ids = []
 for i in range(len(cnn_dailymail_validation)):  
+    print("extracting validation " + str(i))
     articles.append(ext_model(cnn_dailymail_validation[i]["article"], num_sentences = 10))
     highlights.append(cnn_dailymail_validation[i]["highlights"])
     ids.append(cnn_dailymail_validation[i]["id"])
