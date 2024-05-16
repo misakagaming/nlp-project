@@ -7,7 +7,7 @@ import datasets
 from datasets import load_dataset, load_metric
 import nltk
 from nltk.tokenize import sent_tokenize
-
+import sys
 from tqdm import tqdm
 import torch
 
@@ -29,7 +29,8 @@ tokenizer = AutoTokenizer.from_pretrained(model_ckpt)
 
 abs_model = AutoModelForSeq2SeqLM.from_pretrained(model_ckpt).to(device)
 
-
+lr = sys.argv[1]
+epoch = sys.argv[2]
 
 def generate_batch_sized_chunks(list_of_elements, batch_size):
     """split the dataset into smaller batches that we can process simultaneously
@@ -74,9 +75,9 @@ def calculate_metric_on_test_ds(dataset, metric, model, tokenizer,
 
 
 
-cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:20%]")
-cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:20%]")
-cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:20%]")
+cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:5%]")
+cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:5%]")
+cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:5%]")
 
 
 
@@ -115,11 +116,11 @@ seq2seq_data_collator = DataCollatorForSeq2Seq(tokenizer, model=abs_model)
 
 
 trainer_args = TrainingArguments(
-    output_dir='pegasus-cnn_dailymail', num_train_epochs=1, warmup_steps=500,
+    output_dir='pegasus-cnn_dailymail', num_train_epochs=epoch, warmup_steps=500,
     per_device_train_batch_size=2, per_device_eval_batch_size=2,
     weight_decay=0.01, logging_steps=10,
     evaluation_strategy='steps', eval_steps=500, save_steps=1e6,
-    gradient_accumulation_steps=16
+    gradient_accumulation_steps=16, learning_rate=lr
 )
 
 trainer = Trainer(model=abs_model, args=trainer_args,
