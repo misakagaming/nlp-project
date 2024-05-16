@@ -87,38 +87,8 @@ cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:5%]
 cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:5%]")
 cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:5%]")
 
-articles = []
-highlights = []
-ids = []
-for i in range(len(cnn_dailymail_train)):  
-    print("extracting train " + str(i))
-    articles.append(ext_model(cnn_dailymail_train[i]["article"], num_sentences = 10))
-    highlights.append(cnn_dailymail_train[i]["highlights"])
-    ids.append(cnn_dailymail_train[i]["id"])
-train_ext = {"article": articles, "highlights": highlights, "id": ids}
-print("training done \n")
-articles = []
-highlights = []
-ids = []
-for i in range(len(cnn_dailymail_test)):  
-    print("extracting test " + str(i))
-    articles.append(ext_model(cnn_dailymail_test[i]["article"], num_sentences = 10))
-    highlights.append(cnn_dailymail_test[i]["highlights"])
-    ids.append(cnn_dailymail_test[i]["id"])
-test_ext = {"article": articles, "highlights": highlights, "id": ids}
-print("test done \n")
-articles = []
-highlights = []
-ids = []
-for i in range(len(cnn_dailymail_validation)):  
-    print("extracting validation " + str(i))
-    articles.append(ext_model(cnn_dailymail_validation[i]["article"], num_sentences = 10))
-    highlights.append(cnn_dailymail_validation[i]["highlights"])
-    ids.append(cnn_dailymail_validation[i]["id"])
-validation_ext = {"article": articles, "highlights": highlights, "id": ids}
-print("validation done \n")
 
-cnn_dailymail = datasets.DatasetDict({"train":Dataset.from_dict(train_ext), "validation": Dataset.from_dict(validation_ext), "test":Dataset.from_dict(test_ext)})
+cnn_dailymail = datasets.DatasetDict({"train":cnn_dailymail_train, "validation": cnn_dailymail_validation, "test":cnn_dailymail_test)
 
 split_lengths = [len(cnn_dailymail[split])for split in cnn_dailymail]
 
