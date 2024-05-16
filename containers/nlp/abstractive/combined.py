@@ -91,6 +91,7 @@ articles = []
 highlights = []
 ids = []
 for i in range(len(cnn_dailymail_train)):  
+    print("extracting " + str(i))
     articles.append(ext_model(cnn_dailymail_train[i]["article"], num_sentences = 10))
     highlights.append(cnn_dailymail_train[i]["highlights"])
     ids.append(cnn_dailymail_train[i]["id"])
