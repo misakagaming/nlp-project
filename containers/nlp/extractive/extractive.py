@@ -178,6 +178,6 @@ ext_model = model = Summarizer(
     )
     
 print("Article:")
-print(model(sample_text))
+print(model(sample_text, num_sentences=2))
 print("\nReference Summary:")
 print(reference)

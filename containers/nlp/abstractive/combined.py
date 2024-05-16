@@ -4,7 +4,7 @@ from transformers import pipeline, set_seed
 import matplotlib.pyplot as plt
 import pandas as pd
 import datasets
-from datasets import load_dataset, load_metric
+from datasets import load_dataset, load_metric, Dataset
 import nltk
 from nltk.tokenize import sent_tokenize
 
@@ -29,7 +29,11 @@ tokenizer = AutoTokenizer.from_pretrained(model_ckpt)
 
 abs_model = AutoModelForSeq2SeqLM.from_pretrained(model_ckpt).to(device)
 
-
+ext_model = Summarizer(
+        model="bert-large-uncased",
+        hidden=-2,
+        reduce_option='mean'
+    )
 
 def generate_batch_sized_chunks(list_of_elements, batch_size):
     """split the dataset into smaller batches that we can process simultaneously
@@ -73,15 +77,43 @@ def calculate_metric_on_test_ds(dataset, metric, model, tokenizer,
 
 
 
+#sample_text = cnn_dailymail["test"][0]["article"]
+#reference = cnn_dailymail["test"][0]["highlights"]
+#model(cnn_dailymail_train[i]["article"], num_sentences = 10)
+
 
 cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:20%]")
 cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:20%]")
 cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:20%]")
 
+articles = []
+highlights = []
+ids = []
+for i in range(len(cnn_dailymail_train)):  
+    articles.append(model(cnn_dailymail_train[i]["article"], num_sentences = 10))
+    highlights.append(cnn_dailymail_train[i]["highlights"])
+    ids.append(cnn_dailymail_train[i]["id"])
+train_ext = {"article": articles, "highlights": highlights, "id": ids}
 
+articles = []
+highlights = []
+ids = []
+for i in range(len(cnn_dailymail_test)):  
+    articles.append(model(cnn_dailymail_test[i]["article"], num_sentences = 10))
+    highlights.append(cnn_dailymail_test[i]["highlights"])
+    ids.append(cnn_dailymail_test[i]["id"])
+test_ext = {"article": articles, "highlights": highlights, "id": ids}
 
+articles = []
+highlights = []
+ids = []
+for i in range(len(cnn_dailymail_validation)):  
+    articles.append(model(cnn_dailymail_validation[i]["article"], num_sentences = 10))
+    highlights.append(cnn_dailymail_validation[i]["highlights"])
+    ids.append(cnn_dailymail_validation[i]["id"])
+validation_ext = {"article": articles, "highlights": highlights, "id": ids}
 
-cnn_dailymail = datasets.DatasetDict({"train":cnn_dailymail_train, "validation": cnn_dailymail_validation, "test":cnn_dailymail_test})
+cnn_dailymail = datasets.DatasetDict({"train":Dataset.from_dict(train_ext), "validation": Dataset.from_dict(validation_ext), "test":Dataset.from_dict(test_ext)})
 
 split_lengths = [len(cnn_dailymail[split])for split in cnn_dailymail]
 
@@ -115,7 +147,7 @@ seq2seq_data_collator = DataCollatorForSeq2Seq(tokenizer, model=abs_model)
 
 
 trainer_args = TrainingArguments(
-    output_dir='pegasus-cnn_dailymail', num_train_epochs=1, warmup_steps=500,
+    output_dir='pegasus-cnn_dailymail', num_train_epochs=2, warmup_steps=500,
     per_device_train_batch_size=2, per_device_eval_batch_size=2,
     weight_decay=0.01, logging_steps=10,
     evaluation_strategy='steps', eval_steps=500, save_steps=1e6,
