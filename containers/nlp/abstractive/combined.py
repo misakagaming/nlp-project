@@ -83,9 +83,9 @@ def calculate_metric_on_test_ds(dataset, metric, model, tokenizer,
 #model(cnn_dailymail_train[i]["article"], num_sentences = 10)
 
 
-cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:20%]")
-cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:20%]")
-cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:20%]")
+cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:5%]")
+cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:5%]")
+cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:5%]")
 
 articles = []
 highlights = []
