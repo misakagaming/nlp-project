@@ -34,8 +34,8 @@ ext_model = Summarizer(
         hidden=-2,
         reduce_option='mean'
     )
-lr = sys.argv[1]
-epoch = sys.argv[2]
+lr = float(sys.argv[1])
+epoch = int(sys.argv[2])
 
 def generate_batch_sized_chunks(list_of_elements, batch_size):
     """split the dataset into smaller batches that we can process simultaneously
