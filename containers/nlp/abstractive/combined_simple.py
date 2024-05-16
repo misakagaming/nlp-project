@@ -136,10 +136,19 @@ trainer = Trainer(model=abs_model, args=trainer_args,
                   eval_dataset=cnn_dailymail_pt["validation"])
                   
 trainer.train()
-
+articles = []
+highlights = []
+ids = []
+for i in range(len(cnn_dailymail_test)):  
+    print("extracting test " + str(i))
+    articles.append(ext_model(cnn_dailymail_test[i]["article"], num_sentences = 10))
+    highlights.append(cnn_dailymail_test[i]["highlights"])
+    ids.append(cnn_dailymail_test[i]["id"])
+test_ext = {"article": articles, "highlights": highlights, "id": ids}
+print("test done \n")
 rouge_metric = load_metric('rouge')
 score = calculate_metric_on_test_ds(
-    cnn_dailymail['test'], rouge_metric, trainer.model, tokenizer, batch_size = 2, column_text = 'article', column_summary= 'highlights'
+    Dataset.from_dict(test_ext), rouge_metric, trainer.model, tokenizer, batch_size = 2, column_text = 'article', column_summary= 'highlights'
 )
 
 rouge_names = ["rouge1", "rouge2", "rougeL", "rougeLsum"]
