@@ -34,6 +34,7 @@ ext_model = Summarizer(
         hidden=-2,
         reduce_option='mean'
     )
+    
 
 def generate_batch_sized_chunks(list_of_elements, batch_size):
     """split the dataset into smaller batches that we can process simultaneously
@@ -90,7 +91,7 @@ articles = []
 highlights = []
 ids = []
 for i in range(len(cnn_dailymail_train)):  
-    articles.append(model(cnn_dailymail_train[i]["article"], num_sentences = 10))
+    articles.append(ext_model(cnn_dailymail_train[i]["article"], num_sentences = 10))
     highlights.append(cnn_dailymail_train[i]["highlights"])
     ids.append(cnn_dailymail_train[i]["id"])
 train_ext = {"article": articles, "highlights": highlights, "id": ids}
@@ -99,7 +100,7 @@ articles = []
 highlights = []
 ids = []
 for i in range(len(cnn_dailymail_test)):  
-    articles.append(model(cnn_dailymail_test[i]["article"], num_sentences = 10))
+    articles.append(ext_model(cnn_dailymail_test[i]["article"], num_sentences = 10))
     highlights.append(cnn_dailymail_test[i]["highlights"])
     ids.append(cnn_dailymail_test[i]["id"])
 test_ext = {"article": articles, "highlights": highlights, "id": ids}
@@ -108,7 +109,7 @@ articles = []
 highlights = []
 ids = []
 for i in range(len(cnn_dailymail_validation)):  
-    articles.append(model(cnn_dailymail_validation[i]["article"], num_sentences = 10))
+    articles.append(ext_model(cnn_dailymail_validation[i]["article"], num_sentences = 10))
     highlights.append(cnn_dailymail_validation[i]["highlights"])
     ids.append(cnn_dailymail_validation[i]["id"])
 validation_ext = {"article": articles, "highlights": highlights, "id": ids}
@@ -184,7 +185,7 @@ cnn_dailymail = load_dataset('cnn_dailymail', '3.0.0')
 
 tokenizer = AutoTokenizer.from_pretrained("tokenizer")
 
-sample_text = cnn_dailymail["test"][0]["article"]
+sample_text = ext_model(cnn_dailymail["test"][0]["article"], num_sentences=10)
 
 reference = cnn_dailymail["test"][0]["highlights"]
 
