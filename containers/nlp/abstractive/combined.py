@@ -95,7 +95,7 @@ for i in range(len(cnn_dailymail_train)):
     highlights.append(cnn_dailymail_train[i]["highlights"])
     ids.append(cnn_dailymail_train[i]["id"])
 train_ext = {"article": articles, "highlights": highlights, "id": ids}
-
+print("training done \n")
 articles = []
 highlights = []
 ids = []
@@ -104,7 +104,7 @@ for i in range(len(cnn_dailymail_test)):
     highlights.append(cnn_dailymail_test[i]["highlights"])
     ids.append(cnn_dailymail_test[i]["id"])
 test_ext = {"article": articles, "highlights": highlights, "id": ids}
-
+print("test done \n")
 articles = []
 highlights = []
 ids = []
@@ -113,6 +113,7 @@ for i in range(len(cnn_dailymail_validation)):
     highlights.append(cnn_dailymail_validation[i]["highlights"])
     ids.append(cnn_dailymail_validation[i]["id"])
 validation_ext = {"article": articles, "highlights": highlights, "id": ids}
+print("validation done \n")
 
 cnn_dailymail = datasets.DatasetDict({"train":Dataset.from_dict(train_ext), "validation": Dataset.from_dict(validation_ext), "test":Dataset.from_dict(test_ext)})
 
