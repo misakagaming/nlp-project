@@ -36,6 +36,7 @@ ext_model = Summarizer(
     )
 lr = float(sys.argv[1])
 epoch = int(sys.argv[2])
+N_ext = int(sys.argv[3])
 
 def generate_batch_sized_chunks(list_of_elements, batch_size):
     """split the dataset into smaller batches that we can process simultaneously
@@ -141,7 +142,7 @@ highlights = []
 ids = []
 for i in range(len(cnn_dailymail_test)):  
     print("extracting test " + str(i))
-    articles.append(ext_model(cnn_dailymail_test[i]["article"], num_sentences = 10))
+    articles.append(ext_model(cnn_dailymail_test[i]["article"], num_sentences = N_ext))
     highlights.append(cnn_dailymail_test[i]["highlights"])
     ids.append(cnn_dailymail_test[i]["id"])
 test_ext = {"article": articles, "highlights": highlights, "id": ids}
