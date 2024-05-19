@@ -37,6 +37,7 @@ ext_model = Summarizer(
 lr = float(sys.argv[1])
 epoch = int(sys.argv[2])
 N_ext = int(sys.argv[3])
+data = sys.argv[3]
 
 def generate_batch_sized_chunks(list_of_elements, batch_size):
     """split the dataset into smaller batches that we can process simultaneously
@@ -85,9 +86,9 @@ def calculate_metric_on_test_ds(dataset, metric, model, tokenizer,
 #model(cnn_dailymail_train[i]["article"], num_sentences = 10)
 
 
-cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:5%]")
-cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:5%]")
-cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:5%]")
+cnn_dailymail_train = load_dataset('cnn_dailymail', '3.0.0', split = "train[:" + str(data) + "%]")
+cnn_dailymail_test = load_dataset('cnn_dailymail', '3.0.0', split = "test[:" + str(data) + "%]")
+cnn_dailymail_validation = load_dataset('cnn_dailymail', '3.0.0', split = "validation[:" + str(data) + "%]")
 
 
 cnn_dailymail = datasets.DatasetDict({"train":cnn_dailymail_train, "validation": cnn_dailymail_validation, "test":cnn_dailymail_test})
