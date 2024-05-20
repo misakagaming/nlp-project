@@ -17,6 +17,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 		libstdc++6 \
 		gcc-multilib\
 		libc6 \
+		openssh-server \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* 
 
 
