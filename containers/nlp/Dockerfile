@@ -21,18 +21,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 		openssh-server \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* 
 	
-ARG ssh_prv_key="$(cat C:/Users/eraye/.ssh/id_ed25519)"
-ARG ssh_pub_key="$(cat C:/Users/eraye/.ssh/id_ed25519.pub)"
-
-RUN mkdir -p /root/.ssh && \
-    chmod 0700 /root/.ssh
-	
-COPY C:/Users/eraye/.ssh/known_hosts > /root/.ssh/known_hosts
-
-RUN echo "$ssh_prv_key" > /root/.ssh/id_ed25519 && \
-    echo "$ssh_pub_key" > /root/.ssh/id_ed25519.pub && \
-    chmod 600 /root/.ssh/id_ed25519 && \
-    chmod 600 /root/.ssh/id_ed25519.pub
 
 
 RUN python3 -m pip install --upgrade pip && \
