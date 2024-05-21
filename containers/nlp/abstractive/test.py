@@ -18,6 +18,12 @@ from transformers import TrainingArguments, Trainer
 from summarizer import Summarizer
 
 
+ext_model = Summarizer(
+        model="bert-large-uncased",
+        hidden=-2,
+        reduce_option='mean'
+    )
+
 tokenizer = AutoTokenizer.from_pretrained("./tokenizer")
 
 cnn_dailymail = load_dataset('cnn_dailymail', '3.0.0', split = "test[:1%]")
@@ -29,7 +35,7 @@ reference = cnn_dailymail["test"][0]["highlights"]
 
 gen_kwargs = {"length_penalty": 0.8, "num_beams":8, "max_length": 128}
 
-pipe = pipeline("summarization", model=r"C:\Users\eraye\Desktop\test\nlp\pegasus-cnn_dailymail-model",tokenizer=tokenizer)
+pipe = pipeline("summarization", model=".\pegasus-cnn_dailymail-model",tokenizer=tokenizer)
 
 print("Article:")
 print(sample_text)
